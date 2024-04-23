@@ -1,3 +1,12 @@
+
+let themeChanger = document.getElementsByClassName("themeChanger")[0]
+themeChanger.addEventListener('click', changeTheme);
+
+function changeTheme() {
+    let body = document.querySelector("body")
+    body.classList.toggle("dark")
+}
+
 async function sendRequest(url, method, data) {
     if(method == "POST") {
         let response = await fetch(url, {
@@ -15,20 +24,21 @@ async function sendRequest(url, method, data) {
         url = url+"?"+ new URLSearchParams(data)
         let response = await fetch(url, {
             method: "GET",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            
         })
         response = await response.json()
         return response
     }
 }
 
-let themeChanger = document.getElementsByClassName("themeChanger")[0]
-themeChanger.addEventListener('click', changeTheme);
+let searchBtn = document.getElementById("searchBtn")
+searchBtn.addEventListener("click", findMovie)
 
-function changeTheme() {
-    let body = document.querySelector("body")
-    body.classList.toggle("dark")
+async function findMovie() {
+    let searchTitle = document.getElementsByName("search")[0].value
+    let response = await sendRequest("http://www.omdbapi.com/", "GET",{
+        apikey: "875e2aba",
+        t: searchTitle
+    })
+    console.log(response)
 }
